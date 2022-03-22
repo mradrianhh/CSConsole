@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CSConsoleLibrary.Internal.UI;
+using CSConsoleLibrary.Core;
 
 namespace CSConsoleLibrary.Internal.Platform.Agnostic
 {
@@ -26,7 +27,7 @@ namespace CSConsoleLibrary.Internal.Platform.Agnostic
             _data.Height = properties.Height;
         }
 
-        public void OnUpdate()
+        public void OnUpdate(Timestep ts)
         {
             Console.WriteLine("Updating window...");
         }

@@ -13,6 +13,7 @@ namespace CSConsoleApp
         {
             Configuration = ApplicationConfigurationBuilder.CreateConfiguration().SetApplicationName("Sandbox").UseAuthorization(false).SetPlatformType(ApplicationConfiguration.Platform.None);
             Options = ApplicationOptionsBuilder.CreateOptions().SetForegroundColor(ConsoleColor.Red).SetBackgroundColor(ConsoleColor.Black);
+            PushView(new CSConsoleLibrary.UI.View());
         }
     }
 }

@@ -14,15 +14,21 @@ namespace CSConsoleLibrary.Core
     public class Application
     {
         private ApplicationContext Context { get; set; }
-        protected ApplicationConfiguration? Configuration { get; set; }
-        protected ApplicationOptions? Options { get; set; }
-        private IWindowMimic? Window { get; set; }
-
+        protected ApplicationConfiguration Configuration { get; set; }
+        protected ApplicationOptions Options { get; set; }
+        private IWindowMimic Window { get; set; }
+        private Stack<View> _views = new Stack<View>();
+        private float _lastFrameTime = 0.0f;
         private bool Running { get; set; }
         private bool Minimized { get; set; }
 
         public Application()
         {
+            // The derived client class overrides Options and Configuration if desired.
+            Options = new ApplicationOptions() { ForegroundColor = ConsoleColor.White, BackgroundColor = ConsoleColor.Black };
+            Configuration = new ApplicationConfiguration() { ApplicationName = "Application", PlatformType = ApplicationConfiguration.Platform.None, UseAuthorization = false};
+
+            // Attempt to create the context. If a user is logged in while not authorized, reset.
             try
             {
                 ResetContext();
@@ -38,16 +44,12 @@ namespace CSConsoleLibrary.Core
         {
             Console.WriteLine("Initializing...");
 
-            if (Configuration == null)
-                throw new ArgumentNullException("Configuration is not set. Set the Configuration for the application.");
+            Console.ForegroundColor = Options.ForegroundColor;
+            Console.BackgroundColor = Options.BackgroundColor;
 
-            if (Options == null)
-                throw new ArgumentNullException("Options is not set. Set the Options for the application.");
-
-            switch (Configuration?.PlatformType)
+            switch (Configuration.PlatformType)
             {
-                case ApplicationConfiguration.Platform.None: Window = new WindowMimic(new WindowProperties()); return;
-                default: throw new ArgumentException("Invalid platform type. Check configuration.");
+                case ApplicationConfiguration.Platform.None: Window = new WindowMimic(new WindowProperties(title: Configuration.ApplicationName)); break;
             }
         }
 
@@ -57,6 +59,14 @@ namespace CSConsoleLibrary.Core
             Running = true;
             while(Running)
             {
+                float time = DateTime.Now.Millisecond / 1000.0f;
+                Timestep ts = new Timestep(time - _lastFrameTime);
+                _lastFrameTime = time;
+
+                foreach (var view in _views)
+                    view.OnUpdate(ts);
+
+                Window?.OnUpdate(ts);
             }
         }
 
@@ -69,6 +79,18 @@ namespace CSConsoleLibrary.Core
         private void ResetContext()
         {
             Context = new ApplicationContext();
+        }
+
+        public void PushView(View view)
+        {
+            _views.Push(view);
+            view.OnAttach();
+        }
+
+        public void PopView()
+        {
+            var view = _views.Pop();
+            view.OnDetach();
         }
     }
 }

@@ -1,35 +1,43 @@
-﻿using System;
+﻿using CSConsoleLibrary.Internal.Core;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CSConsoleLibrary.Core;
 
 namespace CSConsoleLibrary.UI
 {
-    public class View : IViewableAsync
+    public class View : IViewable
     {
         protected readonly string _identifier;
         public string Identifier { get => _identifier; }
 
-        public View(string identifier)
+        public View(string identifier = "View")
         {
             _identifier = identifier;
         }
 
-        public virtual async Task DisplayAsync()
+        public virtual void OnUpdate(Timestep ts)
         {
-            Console.WriteLine($"Displaying {Identifier}");
-            await AwaitResponseAsync();
+            Console.WriteLine($"Updating from {Identifier}");
         }
 
-        protected virtual async Task AwaitResponseAsync()
+        public virtual void OnAttach()
         {
-            await Task.Delay(5000);
+            Console.WriteLine($"Attaching {Identifier}");
+        }
+
+        public virtual void OnDetach()
+        {
+            Console.WriteLine($"Detaching {Identifier}");
         }
 
         public override string ToString()
         {
             return Identifier;
         }
+
+        
     }
 }

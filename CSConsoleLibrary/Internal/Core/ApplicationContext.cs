@@ -11,13 +11,13 @@ namespace CSConsoleLibrary.Internal.Core
 {
     internal sealed class ApplicationContext
     {
-        public IWindowMimic Window { get; set; }
+        public IWindowMimic CurrentWindow { get; set; }
         public User CurrentUser { get; set; }
         public bool Authorized { get; set; }
 
         public ApplicationContext(IWindowMimic window = null, User user = null, bool authorized = false)
         {
-            Window = window;
+            CurrentWindow = window;
             CurrentUser = user;
             Authorized = authorized;
         }
