@@ -5,13 +5,13 @@ namespace CSConsoleApp
 {
     internal sealed class EntryPoint
     {
-        static async Task Main()
+        static void Main()
         {
             ConsoleApplication app = new ConsoleApplication();
 
             app.Initialize();
 
-            await app.Run();
+            app.Run();
         }
     }
 }

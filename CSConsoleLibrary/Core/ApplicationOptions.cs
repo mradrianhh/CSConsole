@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CSConsoleLibrary.UI;
 
-namespace CSConsoleLibrary
+namespace CSConsoleLibrary.Core
 {
     public struct ApplicationOptions
     {

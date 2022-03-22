@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CSConsoleLibrary;
+using CSConsoleLibrary.Core;
 
 namespace CSConsoleApp
 {
@@ -11,7 +11,7 @@ namespace CSConsoleApp
     {
         public ConsoleApplication() : base()
         {
-            Configuration = ApplicationConfigurationBuilder.CreateConfiguration().SetApplicationName("Sandbox").UseAuthorization(false);
+            Configuration = ApplicationConfigurationBuilder.CreateConfiguration().SetApplicationName("Sandbox").UseAuthorization(false).SetPlatformType(ApplicationConfiguration.Platform.None);
             Options = ApplicationOptionsBuilder.CreateOptions().SetForegroundColor(ConsoleColor.Red).SetBackgroundColor(ConsoleColor.Black);
         }
     }
